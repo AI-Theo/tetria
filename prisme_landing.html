@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prisme — Analyse financière automatisée pour le logement social</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #0f1923;
+      --ink:    #1a2b3c;
+      --gold:   #c9a84c;
+      --gold-l: #e8c97a;
+      --cream:  #f7f4ee;
+      --mist:   #eceae4;
+      --text:   #2c3a46;
+      --light:  #6b7c8d;
+      --white:  #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 3rem;
+      background: rgba(15, 25, 35, 0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201, 168, 76, 0.12);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+    }
+
+    .nav-logo svg { height: 32px; width: auto; }
+
+    .nav-logo-text {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem;
+      color: var(--white);
+      letter-spacing: -0.02em;
+    }
+
+    .nav-logo-text span { color: var(--gold); }
+
+    .nav-cta {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+      border: 1px solid rgba(201, 168, 76, 0.4);
+      padding: 0.5rem 1.25rem;
+      transition: all 0.2s ease;
+    }
+
+    .nav-cta:hover {
+      background: var(--gold);
+      color: var(--navy);
+      border-color: var(--gold);
+    }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 0 3rem;
+      padding-top: 5rem;
+      gap: 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(201, 168, 76, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.2s forwards;
+    }
+
+    .hero-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.8rem, 5vw, 4.2rem);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: var(--navy);
+      margin-bottom: 1.75rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.35s forwards;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--light);
+      max-width: 480px;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.5s forwards;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.65s forwards;
+    }
+
+    .btn-primary {
+      background: var(--navy);
+      color: var(--gold);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.9rem 2rem;
+      display: inline-block;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transition: transform 0.25s ease;
+    }
+
+    .btn-primary:hover { background: var(--ink); }
+    .btn-primary:hover::after { transform: scaleX(1); }
+
+    .btn-ghost {
+      font-size: 0.9rem;
+      color: var(--light);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.2s;
+    }
+
+    .btn-ghost:hover { color: var(--navy); }
+    .btn-ghost::after { content: '→'; }
+
+    /* Hero visual */
+    .hero-visual {
+      opacity: 0;
+      animation: fadeIn 1.2s ease 0.8s forwards;
+    }
+
+    .doc-card {
+      background: var(--white);
+      border: 1px solid rgba(0,0,0,0.06);
+      border-radius: 2px;
+      padding: 2rem;
+      box-shadow: 0 20px 60px rgba(15, 25, 35, 0.08), 0 4px 16px rgba(15, 25, 35, 0.04);
+      position: relative;
+    }
+
+    .doc-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold) 0%, var(--gold-l) 100%);
+    }
+
+    .doc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--mist);
+    }
+
+    .doc-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1rem;
+      color: var(--navy);
+    }
+
+    .doc-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(201, 168, 76, 0.12);
+      color: var(--gold);
+      padding: 0.25rem 0.6rem;
+      border: 1px solid rgba(201, 168, 76, 0.3);
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .kpi-item {
+      padding: 0.75rem;
+      background: var(--cream);
+    }
+
+    .kpi-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--light);
+      margin-bottom: 0.3rem;
+    }
+
+    .kpi-value {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem;
+      color: var(--navy);
+    }
+
+    .kpi-value.neg { color: #c0392b; }
+    .kpi-value.pos { color: #27ae60; }
+
+    .chart-bar {
+      height: 6px;
+      background: var(--mist);
+      border-radius: 1px;
+      overflow: hidden;
+      margin-top: 0.4rem;
+    }
+
+    .chart-bar-fill {
+      height: 100%;
+      background: var(--gold);
+      border-radius: 1px;
+    }
+
+    .trend-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--mist);
+      font-size: 0.82rem;
+    }
+
+    .trend-row:last-child { border-bottom: none; }
+    .trend-label { color: var(--light); }
+
+    .trend-values {
+      display: flex;
+      gap: 1rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+    }
+
+    .trend-delta { color: #27ae60; }
+    .trend-delta.neg { color: #c0392b; }
+
+    /* ── Section : Problème ── */
+    .section-problem {
+      background: var(--navy);
+      padding: 6rem 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section-problem::before {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -5%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(201, 168, 76, 0.06) 0%, transparent 70%);
+    }
+
+    .problem-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+
+    .section-title-light {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      margin-bottom: 2rem;
+    }
+
+    .section-title-light em { color: var(--gold); font-style: italic; }
+
+    .pain-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .pain-item {
+      padding: 1.75rem;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.03);
+      position: relative;
+    }
+
+    .pain-item::before {
+      content: attr(data-num);
+      font-family: 'DM Serif Display', serif;
+      font-size: 3.5rem;
+      color: rgba(201, 168, 76, 0.12);
+      position: absolute;
+      top: 0.5rem;
+      right: 1rem;
+      line-height: 1;
+    }
+
+    .pain-title {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 0.6rem;
+    }
+
+    .pain-desc {
+      font-size: 0.85rem;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.45);
+    }
+
+    /* ── Section : Solution ── */
+    .section-solution {
+      padding: 7rem 3rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .solution-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: end;
+      margin-bottom: 4rem;
+    }
+
+    .section-title-dark {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--navy);
+    }
+
+    .section-title-dark em { color: var(--gold); font-style: italic; }
+
+    .solution-desc {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: var(--light);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--mist);
+      border: 1px solid var(--mist);
+    }
+
+    .feature-item {
+      background: var(--white);
+      padding: 2rem 1.75rem;
+      transition: background 0.2s;
+    }
+
+    .feature-item:hover { background: var(--cream); }
+
+    .feature-icon {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .feature-title {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--navy);
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-desc {
+      font-size: 0.83rem;
+      line-height: 1.65;
+      color: var(--light);
+    }
+
+    /* ── Section : Process ── */
+    .section-process {
+      background: var(--mist);
+      padding: 6rem 3rem;
+    }
+
+    .process-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      margin-top: 3.5rem;
+      position: relative;
+    }
+
+    .process-steps::before {
+      content: '';
+      position: absolute;
+      top: 2rem;
+      left: calc(16.67% + 1rem);
+      right: calc(16.67% + 1rem);
+      height: 1px;
+      background: linear-gradient(90deg, var(--gold) 0%, var(--gold-l) 50%, var(--gold) 100%);
+    }
+
+    .step {
+      padding: 0 1.5rem;
+      text-align: center;
+    }
+
+    .step-num {
+      width: 4rem;
+      height: 4rem;
+      border: 1px solid var(--gold);
+      background: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.25rem;
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem;
+      color: var(--gold);
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-title {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--navy);
+      margin-bottom: 0.5rem;
+    }
+
+    .step-desc {
+      font-size: 0.82rem;
+      line-height: 1.65;
+      color: var(--light);
+    }
+
+    /* ── Section : Contact ── */
+    .section-contact {
+      padding: 7rem 3rem;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .contact-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .form-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--light);
+    }
+
+    .form-input, .form-select, .form-textarea {
+      border: 1px solid rgba(0,0,0,0.12);
+      background: var(--white);
+      padding: 0.75rem 1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: var(--navy);
+      outline: none;
+      transition: border-color 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+      border-radius: 0;
+    }
+
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--gold);
+    }
+
+    .form-textarea { resize: vertical; min-height: 120px; }
+
+    .form-submit {
+      background: var(--navy);
+      color: var(--gold);
+      border: none;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 1rem 2rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      margin-top: 0.5rem;
+    }
+
+    .form-submit:hover { background: var(--ink); }
+
+    .form-note {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--light);
+      margin-top: 0.5rem;
+    }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--navy);
+      padding: 2.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.2rem;
+      color: var(--white);
+    }
+
+    .footer-logo span { color: var(--gold); }
+
+    .footer-copy {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.3);
+      font-family: 'DM Mono', monospace;
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .hero { grid-template-columns: 1fr; padding: 6rem 1.5rem 3rem; }
+      .hero-visual { display: none; }
+      .pain-grid, .features-grid, .process-steps { grid-template-columns: 1fr; }
+      .process-steps::before { display: none; }
+      .solution-header { grid-template-columns: 1fr; gap: 1.5rem; }
+      .form-row { grid-template-columns: 1fr; }
+      .section-problem, .section-solution, .section-process, .section-contact { padding: 4rem 1.5rem; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <svg height="32" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="40,4 12,68 68,68" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-linejoin="round"/>
+        <polygon points="40,4 12,68 40,36" fill="rgba(255,255,255,0.04)" stroke="none"/>
+        <line x1="2" y1="36" x2="24" y2="36" stroke="rgba(255,255,255,0.3)" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="24" y1="36" x2="54" y2="58" stroke="rgba(255,255,255,0.15)" stroke-width="1.2" stroke-dasharray="3 2" stroke-linecap="round"/>
+        <line x1="54" y1="58" x2="78" y2="42" stroke="#e8433a" stroke-width="1.6" stroke-linecap="round"/>
+        <line x1="54" y1="58" x2="78" y2="49" stroke="#f0832a" stroke-width="1.6" stroke-linecap="round"/>
+        <line x1="54" y1="58" x2="78" y2="56" stroke="#e8c547" stroke-width="1.6" stroke-linecap="round"/>
+        <line x1="54" y1="58" x2="78" y2="63" stroke="#4caf72" stroke-width="1.6" stroke-linecap="round"/>
+        <line x1="54" y1="58" x2="78" y2="70" stroke="#2e75b6" stroke-width="1.6" stroke-linecap="round"/>
+        <line x1="54" y1="58" x2="78" y2="77" stroke="#8b5cf6" stroke-width="1.6" stroke-linecap="round"/>
+        <circle cx="24" cy="36" r="2" fill="rgba(255,255,255,0.3)"/>
+        <circle cx="54" cy="58" r="2" fill="rgba(255,255,255,0.3)"/>
+      </svg>
+      <span class="nav-logo-text">Prisme<span>.</span></span>
+    </a>
+    <a href="#contact" class="nav-cta">Prendre contact</a>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <p class="hero-eyebrow">Analyse financière · Logement social</p>
+      <h1 class="hero-title">
+        Faites la lumière<br>
+        sur vos <em>comptes financiers.</em>
+      </h1>
+      <p class="hero-sub">
+        Prisme extrait automatiquement les données de vos comptes financiers réglementaires et génère des rapports comparatifs multi-années — sans saisie manuelle, sans erreur.
+      </p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">Demander une démo</a>
+        <a href="#solution" class="btn-ghost">Découvrir</a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="doc-card">
+        <div class="doc-header">
+          <div>
+            <div class="doc-title">Rapport comparatif</div>
+            <div style="font-size:0.75rem;color:var(--light);margin-top:0.2rem;font-family:'DM Mono',monospace;">2021 — 2022 — 2023</div>
+          </div>
+          <div class="doc-badge">Généré</div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-item">
+            <div class="kpi-label">Résultat net</div>
+            <div class="kpi-value neg">−248 K€</div>
+            <div class="chart-bar"><div class="chart-bar-fill" style="width:35%"></div></div>
+          </div>
+          <div class="kpi-item">
+            <div class="kpi-label">Capitaux propres</div>
+            <div class="kpi-value">12,1 M€</div>
+            <div class="chart-bar"><div class="chart-bar-fill" style="width:82%"></div></div>
+          </div>
+          <div class="kpi-item">
+            <div class="kpi-label">CAF nette HLM</div>
+            <div class="kpi-value neg">−270 K€</div>
+            <div class="chart-bar"><div class="chart-bar-fill" style="width:22%"></div></div>
+          </div>
+          <div class="kpi-item">
+            <div class="kpi-label">Total actif</div>
+            <div class="kpi-value pos">12,8 M€</div>
+            <div class="chart-bar"><div class="chart-bar-fill" style="width:90%"></div></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="trend-row">
+            <span class="trend-label">Résultat d'exploitation</span>
+            <div class="trend-values">
+              <span>−282 K€</span>
+              <span class="trend-delta neg">−264 K€</span>
+            </div>
+          </div>
+          <div class="trend-row">
+            <span class="trend-label">Résultat financier</span>
+            <div class="trend-values">
+              <span>+32 K€</span>
+              <span class="trend-delta pos">+16 K€</span>
+            </div>
+          </div>
+          <div class="trend-row">
+            <span class="trend-label">Variation FDR</span>
+            <div class="trend-values">
+              <span>+6,4 M€</span>
+              <span class="trend-delta pos">+3,6 M€</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Problème -->
+  <section class="section-problem">
+    <div class="problem-inner">
+      <p class="section-eyebrow reveal">Le problème</p>
+      <h2 class="section-title-light reveal">
+        Analyser un compte financier<br>
+        prend <em>trop de temps.</em>
+      </h2>
+      <div class="pain-grid">
+        <div class="pain-item reveal" data-num="01">
+          <div class="pain-title">Des PDF de 50 pages</div>
+          <div class="pain-desc">Les comptes financiers réglementaires sont denses, structurés différemment d'un organisme à l'autre, et impossibles à consolider rapidement.</div>
+        </div>
+        <div class="pain-item reveal" data-num="02">
+          <div class="pain-title">La comparaison multi-années</div>
+          <div class="pain-desc">Reconstruire un historique sur 3 ou 5 ans implique des heures de saisie manuelle, une source d'erreurs systématique.</div>
+        </div>
+        <div class="pain-item reveal" data-num="03">
+          <div class="pain-title">Aucun outil dédié</div>
+          <div class="pain-desc">Les solutions existantes sont soit trop génériques, soit réservées aux grandes structures. Les OPH et ESH moyens n'ont rien d'adapté.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Solution -->
+  <section class="section-solution" id="solution">
+    <div class="solution-header">
+      <h2 class="section-title-dark reveal">
+        Prisme lit vos PDF.<br>
+        Vous lisez <em>les résultats.</em>
+      </h2>
+      <p class="solution-desc reveal">
+        Notre pipeline d'intelligence artificielle identifie et extrait automatiquement tous les tableaux de vos comptes financiers — bilan, compte de résultat, SIG, CAF, tableau de financement — et les transforme en analyses comparatives structurées.
+      </p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-item reveal">
+        <span class="feature-icon">⚡</span>
+        <div class="feature-title">Extraction automatique</div>
+        <div class="feature-desc">GPT-4o Vision lit chaque page comme un analyste humain. Aucune configuration de template, aucune règle fragile.</div>
+      </div>
+      <div class="feature-item reveal">
+        <span class="feature-icon">📊</span>
+        <div class="feature-title">Comparaison multi-années</div>
+        <div class="feature-desc">Chargez vos PDFs de 2019 à 2024 — Prisme calcule automatiquement les évolutions et les variations significatives.</div>
+      </div>
+      <div class="feature-item reveal">
+        <span class="feature-icon">📄</span>
+        <div class="feature-title">Rapport Word clé en main</div>
+        <div class="feature-desc">Un document structuré avec tableaux KPIs, textes d'analyse narratifs et données détaillées par rubrique.</div>
+      </div>
+      <div class="feature-item reveal">
+        <span class="feature-icon">🔒</span>
+        <div class="feature-title">Données confidentielles</div>
+        <div class="feature-desc">Hébergement EU disponible, politique zero data retention. Vos données financières ne quittent pas le périmètre sécurisé.</div>
+      </div>
+      <div class="feature-item reveal">
+        <span class="feature-icon">🎯</span>
+        <div class="feature-title">Spécialisé HLM</div>
+        <div class="feature-desc">Conçu pour le format Salvia Développement et les comptes financiers réglementaires OPH/ESH. Pas un outil générique.</div>
+      </div>
+      <div class="feature-item reveal">
+        <span class="feature-icon">⚙️</span>
+        <div class="feature-title">Évolutif à la demande</div>
+        <div class="feature-desc">Alertes sur ratios réglementaires, intégration GED, exports personnalisés — on construit ce dont vous avez besoin.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section class="section-process">
+    <div class="process-inner">
+      <p class="section-eyebrow reveal" style="color:var(--gold)">Comment ça marche</p>
+      <h2 class="section-title-dark reveal">Trois étapes, un rapport.</h2>
+      <div class="process-steps">
+        <div class="step reveal">
+          <div class="step-num">1</div>
+          <div class="step-title">Vous envoyez vos PDF</div>
+          <div class="step-desc">Comptes financiers d'une ou plusieurs années, peu importe le nombre de pages.</div>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">2</div>
+          <div class="step-title">Prisme extrait et analyse</div>
+          <div class="step-desc">L'IA identifie les tableaux, extrait les données et calcule les évolutions.</div>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">3</div>
+          <div class="step-title">Vous recevez le rapport</div>
+          <div class="step-desc">Un document Word structuré, prêt à partager en conseil d'administration.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="section-contact" id="contact">
+    <div class="contact-header">
+      <p class="section-eyebrow reveal" style="text-align:center">Contact</p>
+      <h2 class="section-title-dark reveal" style="text-align:center">
+        Parlons de<br><em>votre situation.</em>
+      </h2>
+      <p class="reveal" style="font-size:0.9rem;color:var(--light);margin-top:1rem;line-height:1.7;">
+        Je propose un rapport démo gratuit sur vos propres données.<br>Un premier éclairage, sans engagement.
+      </p>
+    </div>
+
+    <form class="contact-form reveal" name="contact" netlify>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Prénom</label>
+          <input type="text" name="prenom" class="form-input" placeholder="Marie" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nom</label>
+          <input type="text" name="nom" class="form-input" placeholder="Dupont" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email professionnel</label>
+        <input type="email" name="email" class="form-input" placeholder="contact@organisme.fr" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Type de structure</label>
+        <select name="type" class="form-select">
+          <option value="">Sélectionner...</option>
+          <option>OPH / ESH</option>
+          <option>Cabinet d'expertise comptable</option>
+          <option>Fédération HLM</option>
+          <option>Direction départementale</option>
+          <option>Autre</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Votre besoin</label>
+        <textarea name="message" class="form-textarea" placeholder="Décrivez votre situation, le nombre d'organismes suivis, vos contraintes..."></textarea>
+      </div>
+      <button type="submit" class="form-submit">Envoyer ma demande →</button>
+      <p class="form-note">Réponse sous 48h. Aucun engagement.</p>
+    </form>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-logo" style="display:flex;align-items:center;gap:0.5rem;">
+      <svg height="24" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="40,4 12,68 68,68" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-linejoin="round"/>
+        <line x1="2" y1="36" x2="24" y2="36" stroke="rgba(255,255,255,0.3)" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="24" y1="36" x2="54" y2="58" stroke="rgba(255,255,255,0.15)" stroke-width="1.2" stroke-dasharray="3 2" stroke-linecap="round"/>
+        <line x1="54" y1="58" x2="78" y2="42" stroke="#e8433a" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="54" y1="58" x2="78" y2="49" stroke="#f0832a" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="54" y1="58" x2="78" y2="56" stroke="#e8c547" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="54" y1="58" x2="78" y2="63" stroke="#4caf72" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="54" y1="58" x2="78" y2="70" stroke="#2e75b6" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="54" y1="58" x2="78" y2="77" stroke="#8b5cf6" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:white;">Prisme<span style="color:var(--gold)">.</span></span>
+    </div>
+    <div class="footer-copy">© 2025 Prisme — Analyse financière IA pour le logement social</div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
