@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tetria — Analyse financière automatisée pour le logement social</title>
+  <title>Tetria — L'IA qui connaît vos documents</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
@@ -30,6 +30,22 @@
       overflow-x: hidden;
     }
 
+    /* ── Reveal animation ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: none; }
+    }
+
     /* ── Nav ── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
@@ -41,38 +57,38 @@
     }
 
     .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
+      display: flex; align-items: center; gap: 0.6rem;
       text-decoration: none;
     }
-
     .nav-logo svg { height: 32px; width: auto; }
-
     .nav-logo-text {
       font-family: 'DM Serif Display', serif;
-      font-size: 1.4rem;
-      color: var(--white);
-      letter-spacing: -0.02em;
+      font-size: 1.4rem; color: var(--white); letter-spacing: -0.02em;
     }
-
     .nav-logo-text span { color: var(--gold); }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.82rem; color: rgba(255,255,255,0.55);
+      text-decoration: none; letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--white); }
 
     .nav-cta {
       font-family: 'DM Mono', monospace;
-      font-size: 0.75rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--gold);
+      font-size: 0.75rem; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--gold);
       text-decoration: none;
       border: 1px solid rgba(201, 168, 76, 0.4);
       padding: 0.5rem 1.25rem;
       transition: all 0.2s ease;
     }
-
     .nav-cta:hover {
-      background: var(--gold);
-      color: var(--navy);
+      background: var(--gold); color: var(--navy);
       border-color: var(--gold);
     }
 
@@ -87,567 +103,498 @@
       gap: 4rem;
       position: relative;
       overflow: hidden;
+      background: var(--navy);
     }
 
     .hero::before {
       content: '';
-      position: absolute;
-      top: -20%;
-      right: -10%;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(201, 168, 76, 0.08) 0%, transparent 70%);
+      position: absolute; top: -20%; right: -10%;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute; bottom: -10%; left: -5%;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(46,117,182,0.06) 0%, transparent 70%);
       pointer-events: none;
     }
 
     .hero-eyebrow {
       font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--gold);
+      font-size: 0.72rem; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--gold);
       margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.2s forwards;
+      opacity: 0; animation: fadeUp 0.8s ease 0.2s forwards;
     }
 
     .hero-title {
       font-family: 'DM Serif Display', serif;
-      font-size: clamp(2.8rem, 5vw, 4.2rem);
-      line-height: 1.08;
-      letter-spacing: -0.03em;
-      color: var(--navy);
+      font-size: clamp(2.8rem, 5vw, 4.4rem);
+      line-height: 1.08; letter-spacing: -0.03em;
+      color: var(--white);
       margin-bottom: 1.75rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.35s forwards;
+      opacity: 0; animation: fadeUp 0.8s ease 0.35s forwards;
     }
-
-    .hero-title em {
-      font-style: italic;
-      color: var(--gold);
-    }
+    .hero-title em { font-style: italic; color: var(--gold); }
 
     .hero-sub {
-      font-size: 1.05rem;
-      line-height: 1.7;
-      color: var(--light);
-      max-width: 480px;
-      margin-bottom: 2.5rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.5s forwards;
+      font-size: 1.05rem; line-height: 1.7;
+      color: rgba(255,255,255,0.5);
+      max-width: 480px; margin-bottom: 2.5rem;
+      opacity: 0; animation: fadeUp 0.8s ease 0.5s forwards;
     }
 
     .hero-actions {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.65s forwards;
+      display: flex; align-items: center; gap: 1.5rem;
+      opacity: 0; animation: fadeUp 0.8s ease 0.65s forwards;
     }
 
     .btn-primary {
-      background: var(--navy);
-      color: var(--gold);
+      background: var(--gold); color: var(--navy);
       font-family: 'DM Mono', monospace;
-      font-size: 0.78rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      text-decoration: none;
-      padding: 0.9rem 2rem;
-      display: inline-block;
-      transition: all 0.25s ease;
-      position: relative;
-      overflow: hidden;
+      font-size: 0.78rem; letter-spacing: 0.1em;
+      text-transform: uppercase; text-decoration: none;
+      padding: 0.9rem 2rem; display: inline-block;
+      transition: all 0.25s ease; font-weight: 500;
     }
-
-    .btn-primary::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 2px;
-      background: var(--gold);
-      transform: scaleX(0);
-      transition: transform 0.25s ease;
-    }
-
-    .btn-primary:hover { background: var(--ink); }
-    .btn-primary:hover::after { transform: scaleX(1); }
+    .btn-primary:hover { background: var(--gold-l); }
 
     .btn-ghost {
-      font-size: 0.9rem;
-      color: var(--light);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
+      font-size: 0.88rem; color: rgba(255,255,255,0.45);
+      text-decoration: none; display: flex; align-items: center; gap: 0.5rem;
       transition: color 0.2s;
     }
-
-    .btn-ghost:hover { color: var(--navy); }
+    .btn-ghost:hover { color: var(--white); }
     .btn-ghost::after { content: '→'; }
 
-    /* Hero visual */
+    /* Chat demo mockup */
     .hero-visual {
-      opacity: 0;
-      animation: fadeIn 1.2s ease 0.8s forwards;
+      opacity: 0; animation: fadeUp 0.9s ease 0.5s forwards;
+      position: relative;
     }
 
-    .doc-card {
-      background: var(--white);
-      border: 1px solid rgba(0,0,0,0.06);
+    .chat-window {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
       border-radius: 2px;
-      padding: 2rem;
-      box-shadow: 0 20px 60px rgba(15, 25, 35, 0.08), 0 4px 16px rgba(15, 25, 35, 0.04);
-      position: relative;
-    }
-
-    .doc-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--gold) 0%, var(--gold-l) 100%);
-    }
-
-    .doc-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 1.5rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid var(--mist);
-    }
-
-    .doc-title {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1rem;
-      color: var(--navy);
-    }
-
-    .doc-badge {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      background: rgba(201, 168, 76, 0.12);
-      color: var(--gold);
-      padding: 0.25rem 0.6rem;
-      border: 1px solid rgba(201, 168, 76, 0.3);
-    }
-
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.75rem;
-      margin-bottom: 1.25rem;
-    }
-
-    .kpi-item {
-      padding: 0.75rem;
-      background: var(--cream);
-    }
-
-    .kpi-label {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.62rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--light);
-      margin-bottom: 0.3rem;
-    }
-
-    .kpi-value {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.1rem;
-      color: var(--navy);
-    }
-
-    .kpi-value.neg { color: #c0392b; }
-    .kpi-value.pos { color: #27ae60; }
-
-    .chart-bar {
-      height: 6px;
-      background: var(--mist);
-      border-radius: 1px;
-      overflow: hidden;
-      margin-top: 0.4rem;
-    }
-
-    .chart-bar-fill {
-      height: 100%;
-      background: var(--gold);
-      border-radius: 1px;
-    }
-
-    .trend-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.5rem 0;
-      border-bottom: 1px solid var(--mist);
-      font-size: 0.82rem;
-    }
-
-    .trend-row:last-child { border-bottom: none; }
-    .trend-label { color: var(--light); }
-
-    .trend-values {
-      display: flex;
-      gap: 1rem;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.75rem;
-    }
-
-    .trend-delta { color: #27ae60; }
-    .trend-delta.neg { color: #c0392b; }
-
-    /* ── Section : Problème ── */
-    .section-problem {
-      background: var(--navy);
-      padding: 6rem 3rem;
-      position: relative;
       overflow: hidden;
     }
 
-    .section-problem::before {
-      content: '';
-      position: absolute;
-      bottom: -30%;
-      left: -5%;
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, rgba(201, 168, 76, 0.06) 0%, transparent 70%);
+    .chat-topbar {
+      background: rgba(255,255,255,0.06);
+      padding: 0.75rem 1rem;
+      display: flex; align-items: center; gap: 0.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .chat-dot {
+      width: 8px; height: 8px; border-radius: 50%;
     }
 
-    .problem-inner {
-      max-width: 900px;
-      margin: 0 auto;
+    .chat-messages { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+
+    .msg {
+      display: flex; gap: 0.75rem; align-items: flex-start;
+    }
+    .msg-avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; font-weight: 600;
+    }
+    .msg-avatar.user { background: rgba(201,168,76,0.2); color: var(--gold); }
+    .msg-avatar.bot  { background: rgba(46,117,182,0.2); color: #2e75b6; }
+
+    .msg-bubble {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 0.65rem 0.9rem;
+      font-size: 0.8rem; line-height: 1.6;
+      color: rgba(255,255,255,0.75);
+      max-width: 85%;
+    }
+    .msg-bubble.user-bubble {
+      background: rgba(201,168,76,0.08);
+      border-color: rgba(201,168,76,0.15);
+      color: rgba(255,255,255,0.8);
     }
 
+    .msg-source {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem; color: rgba(46,117,182,0.7);
+      margin-top: 0.4rem; display: block;
+    }
+
+    .chat-input {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 0.75rem 1rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .chat-input-field {
+      flex: 1; background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 0.5rem 0.75rem;
+      font-size: 0.78rem; color: rgba(255,255,255,0.4);
+      font-family: 'DM Sans', sans-serif;
+    }
+    .chat-send {
+      background: var(--gold); color: var(--navy);
+      border: none; padding: 0.5rem 0.9rem;
+      font-size: 0.75rem; font-family: 'DM Mono', monospace;
+      cursor: pointer; letter-spacing: 0.05em;
+    }
+
+    /* Typing animation */
+    .typing-dots span {
+      display: inline-block;
+      width: 5px; height: 5px; border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      animation: blink 1.2s infinite;
+      margin: 0 1px;
+    }
+    .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes blink {
+      0%, 80%, 100% { opacity: 0.2; }
+      40% { opacity: 1; }
+    }
+
+    /* ── Sections communes ── */
     .section-eyebrow {
       font-family: 'DM Mono', monospace;
-      font-size: 0.7rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 1.5rem;
-    }
-
-    .section-title-light {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(2rem, 3.5vw, 3rem);
-      line-height: 1.15;
-      letter-spacing: -0.02em;
-      color: var(--white);
-      margin-bottom: 2rem;
-    }
-
-    .section-title-light em { color: var(--gold); font-style: italic; }
-
-    .pain-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      margin-top: 3rem;
-    }
-
-    .pain-item {
-      padding: 1.75rem;
-      border: 1px solid rgba(255,255,255,0.06);
-      background: rgba(255,255,255,0.03);
-      position: relative;
-    }
-
-    .pain-item::before {
-      content: attr(data-num);
-      font-family: 'DM Serif Display', serif;
-      font-size: 3.5rem;
-      color: rgba(201, 168, 76, 0.12);
-      position: absolute;
-      top: 0.5rem;
-      right: 1rem;
-      line-height: 1;
-    }
-
-    .pain-title {
-      font-size: 0.95rem;
-      font-weight: 500;
-      color: var(--white);
-      margin-bottom: 0.6rem;
-    }
-
-    .pain-desc {
-      font-size: 0.85rem;
-      line-height: 1.65;
-      color: rgba(255,255,255,0.45);
-    }
-
-    /* ── Section : Solution ── */
-    .section-solution {
-      padding: 7rem 3rem;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .solution-header {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: end;
-      margin-bottom: 4rem;
+      font-size: 0.72rem; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 0.75rem; display: block;
     }
 
     .section-title-dark {
       font-family: 'DM Serif Display', serif;
-      font-size: clamp(2rem, 3.5vw, 2.8rem);
-      line-height: 1.15;
-      letter-spacing: -0.02em;
-      color: var(--navy);
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.1; letter-spacing: -0.02em;
+      color: var(--navy); margin-bottom: 1rem;
+    }
+    .section-title-dark em { font-style: italic; color: var(--gold); }
+
+    .section-title-light {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.1; letter-spacing: -0.02em;
+      color: var(--white); margin-bottom: 1rem;
+    }
+    .section-title-light em { font-style: italic; color: var(--gold); }
+
+    /* ── Problème / Copilot ── */
+    .section-problem {
+      padding: 6rem 3rem;
+      background: var(--cream);
+    }
+    .problem-inner {
+      max-width: 1100px; margin: 0 auto;
+    }
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      margin-top: 3rem;
+      background: var(--mist);
+    }
+    .problem-card {
+      background: var(--cream);
+      padding: 2rem;
+    }
+    .problem-card-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem; letter-spacing: 0.12em;
+      text-transform: uppercase; margin-bottom: 1rem;
+    }
+    .problem-card-label.bad  { color: #e8433a; }
+    .problem-card-label.good { color: #4caf72; }
+
+    .problem-card-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.2rem; color: var(--navy);
+      margin-bottom: 1rem; line-height: 1.3;
     }
 
-    .section-title-dark em { color: var(--gold); font-style: italic; }
-
-    .solution-desc {
-      font-size: 0.95rem;
-      line-height: 1.75;
-      color: var(--light);
+    .problem-list {
+      list-style: none; display: flex; flex-direction: column; gap: 0.6rem;
     }
+    .problem-list li {
+      font-size: 0.85rem; color: var(--light);
+      line-height: 1.6; display: flex; gap: 0.6rem;
+      align-items: flex-start;
+    }
+    .problem-list li::before { flex-shrink: 0; margin-top: 0.15rem; }
+    .problem-list.bad  li::before { content: '✗'; color: #e8433a; }
+    .problem-list.good li::before { content: '✓'; color: #4caf72; }
 
-    .features-grid {
+    /* ── Use cases ── */
+    .section-usecases {
+      padding: 6rem 3rem;
+      background: var(--navy);
+    }
+    .usecases-inner { max-width: 1100px; margin: 0 auto; }
+
+    .usecases-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1px;
-      background: var(--mist);
-      border: 1px solid var(--mist);
+      margin-top: 3rem;
+      background: rgba(255,255,255,0.06);
     }
 
-    .feature-item {
-      background: var(--white);
-      padding: 2rem 1.75rem;
-      transition: background 0.2s;
+    .usecase-card {
+      background: var(--navy);
+      padding: 2rem;
+      transition: background 0.25s;
+      cursor: default;
     }
+    .usecase-card:hover { background: rgba(255,255,255,0.03); }
 
-    .feature-item:hover { background: var(--cream); }
-
-    .feature-icon {
-      font-size: 1.4rem;
-      margin-bottom: 1rem;
-      display: block;
+    .usecase-icon {
+      font-size: 1.5rem; margin-bottom: 1rem;
     }
-
-    .feature-title {
-      font-size: 0.95rem;
-      font-weight: 500;
-      color: var(--navy);
+    .usecase-sector {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--gold);
       margin-bottom: 0.5rem;
     }
-
-    .feature-desc {
-      font-size: 0.83rem;
-      line-height: 1.65;
-      color: var(--light);
+    .usecase-title {
+      font-size: 0.9rem; font-weight: 500;
+      color: var(--white); margin-bottom: 0.5rem;
+      line-height: 1.4;
+    }
+    .usecase-example {
+      font-size: 0.78rem; color: rgba(255,255,255,0.35);
+      line-height: 1.65; font-style: italic;
     }
 
-    /* ── Section : Process ── */
-    .section-process {
-      background: var(--mist);
+    /* ── How it works ── */
+    .section-how {
       padding: 6rem 3rem;
+      background: var(--cream);
+    }
+    .how-inner { max-width: 1100px; margin: 0 auto; }
+
+    .how-steps {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 0; margin-top: 3rem;
+      counter-reset: steps;
     }
 
-    .process-inner {
-      max-width: 900px;
-      margin: 0 auto;
-      text-align: center;
-    }
-
-    .process-steps {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0;
-      margin-top: 3.5rem;
+    .how-step {
+      padding: 2.5rem 2rem;
+      border-top: 2px solid var(--mist);
       position: relative;
     }
+    .how-step:nth-child(2) { border-top-color: var(--gold); }
 
-    .process-steps::before {
-      content: '';
-      position: absolute;
-      top: 2rem;
-      left: calc(16.67% + 1rem);
-      right: calc(16.67% + 1rem);
-      height: 1px;
-      background: linear-gradient(90deg, var(--gold) 0%, var(--gold-l) 50%, var(--gold) 100%);
-    }
-
-    .step {
-      padding: 0 1.5rem;
-      text-align: center;
-    }
-
-    .step-num {
-      width: 4rem;
-      height: 4rem;
-      border: 1px solid var(--gold);
-      background: var(--white);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 1.25rem;
+    .how-step-num {
       font-family: 'DM Serif Display', serif;
-      font-size: 1.3rem;
+      font-size: 3rem; color: var(--mist);
+      line-height: 1; margin-bottom: 1rem;
+    }
+    .how-step:nth-child(2) .how-step-num { color: rgba(201,168,76,0.2); }
+
+    .how-step-title {
+      font-size: 0.95rem; font-weight: 500;
+      color: var(--navy); margin-bottom: 0.6rem;
+    }
+    .how-step-desc {
+      font-size: 0.82rem; color: var(--light); line-height: 1.7;
+    }
+
+    /* ── Sécurité ── */
+    .section-security {
+      padding: 6rem 3rem;
+      background: var(--ink);
+    }
+    .security-inner { max-width: 1100px; margin: 0 auto; }
+
+    .security-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 2px; margin-top: 3rem;
+      background: rgba(255,255,255,0.04);
+    }
+
+    .security-card {
+      background: var(--ink);
+      padding: 2.5rem;
+    }
+    .security-card.featured {
+      background: rgba(201,168,76,0.05);
+      border: 1px solid rgba(201,168,76,0.15);
+      grid-column: span 2;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 3rem; align-items: center;
+    }
+
+    .security-icon {
+      font-size: 2rem; margin-bottom: 1.25rem;
+    }
+    .security-title {
+      font-size: 0.95rem; font-weight: 500;
+      color: var(--white); margin-bottom: 0.6rem;
+    }
+    .security-desc {
+      font-size: 0.8rem; color: rgba(255,255,255,0.4);
+      line-height: 1.7;
+    }
+
+    .security-diagram {
+      display: flex; flex-direction: column; gap: 0.5rem;
+    }
+    .diag-row {
+      display: flex; align-items: center; gap: 0.75rem;
+      font-size: 0.75rem; color: rgba(255,255,255,0.5);
+      font-family: 'DM Mono', monospace;
+    }
+    .diag-box {
+      padding: 0.4rem 0.8rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.6);
+      font-size: 0.72rem; white-space: nowrap;
+    }
+    .diag-box.highlight {
+      border-color: rgba(201,168,76,0.4);
+      background: rgba(201,168,76,0.06);
       color: var(--gold);
-      position: relative;
-      z-index: 1;
     }
+    .diag-arrow { color: rgba(255,255,255,0.2); font-size: 0.9rem; }
+    .diag-lock { color: #4caf72; }
 
-    .step-title {
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--navy);
-      margin-bottom: 0.5rem;
-    }
-
-    .step-desc {
-      font-size: 0.82rem;
-      line-height: 1.65;
-      color: var(--light);
-    }
-
-    /* ── Section : Contact ── */
-    .section-contact {
-      padding: 7rem 3rem;
-      max-width: 680px;
-      margin: 0 auto;
-    }
-
-    .contact-header {
+    /* ── Démo ── */
+    .section-demo {
+      padding: 6rem 3rem;
+      background: var(--cream);
       text-align: center;
-      margin-bottom: 3rem;
+    }
+    .demo-inner { max-width: 700px; margin: 0 auto; }
+
+    .demo-badge {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem; letter-spacing: 0.14em;
+      text-transform: uppercase;
+      background: rgba(76,175,114,0.1);
+      color: #4caf72;
+      border: 1px solid rgba(76,175,114,0.25);
+      padding: 0.3rem 0.8rem;
+      margin-bottom: 2rem;
     }
 
-    .contact-form {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
+    .demo-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.1; letter-spacing: -0.02em;
+      color: var(--navy); margin-bottom: 1.25rem;
+    }
+    .demo-title em { font-style: italic; color: var(--gold); }
+
+    .demo-sub {
+      font-size: 0.95rem; color: var(--light);
+      line-height: 1.75; margin-bottom: 2.5rem;
     }
 
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
+    .demo-cta {
+      display: inline-block;
+      background: var(--navy); color: var(--gold);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.82rem; letter-spacing: 0.1em;
+      text-transform: uppercase; text-decoration: none;
+      padding: 1rem 2.5rem;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+    .demo-cta::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 2px; background: var(--gold);
+      transform: scaleX(0); transition: transform 0.25s ease;
+    }
+    .demo-cta:hover { background: var(--ink); }
+    .demo-cta:hover::after { transform: scaleX(1); }
+
+    .demo-note {
+      font-size: 0.78rem; color: var(--light);
+      margin-top: 1rem; font-style: italic;
     }
 
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
+    /* ── Contact ── */
+    .section-contact {
+      padding: 6rem 3rem;
+      background: var(--navy);
     }
+    .contact-inner { max-width: 700px; margin: 0 auto; }
+
+    .form-group { margin-bottom: 1.25rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem; }
 
     .form-label {
+      display: block; font-size: 0.75rem;
       font-family: 'DM Mono', monospace;
-      font-size: 0.68rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--light);
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: rgba(255,255,255,0.35); margin-bottom: 0.5rem;
     }
 
     .form-input, .form-select, .form-textarea {
-      border: 1px solid rgba(0,0,0,0.12);
-      background: var(--white);
-      padding: 0.75rem 1rem;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.9rem;
-      color: var(--navy);
-      outline: none;
+      width: 100%; background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 0.75rem 1rem; color: var(--white);
+      font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
       transition: border-color 0.2s;
-      appearance: none;
       -webkit-appearance: none;
-      border-radius: 0;
     }
-
     .form-input:focus, .form-select:focus, .form-textarea:focus {
-      border-color: var(--gold);
+      outline: none; border-color: rgba(201,168,76,0.4);
     }
-
-    .form-textarea { resize: vertical; min-height: 120px; }
+    .form-input::placeholder { color: rgba(255,255,255,0.2); }
+    .form-textarea { min-height: 120px; resize: vertical; }
+    .form-select { color: rgba(255,255,255,0.5); }
+    .form-select option { background: var(--navy); }
 
     .form-submit {
-      background: var(--navy);
-      color: var(--gold);
-      border: none;
+      width: 100%; background: var(--gold); color: var(--navy);
+      border: none; padding: 1rem;
       font-family: 'DM Mono', monospace;
-      font-size: 0.78rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 1rem 2rem;
-      cursor: pointer;
-      transition: all 0.25s ease;
+      font-size: 0.82rem; letter-spacing: 0.1em;
+      text-transform: uppercase; cursor: pointer;
+      font-weight: 500; transition: background 0.2s;
       margin-top: 0.5rem;
     }
-
-    .form-submit:hover { background: var(--ink); }
+    .form-submit:hover { background: var(--gold-l); }
 
     .form-note {
-      text-align: center;
-      font-size: 0.78rem;
-      color: var(--light);
-      margin-top: 0.5rem;
+      font-size: 0.75rem; color: rgba(255,255,255,0.25);
+      text-align: center; margin-top: 1rem;
     }
 
     /* ── Footer ── */
     footer {
-      background: var(--navy);
+      background: #0a1118;
       padding: 2.5rem 3rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      display: flex; align-items: center; justify-content: space-between;
+      border-top: 1px solid rgba(255,255,255,0.05);
     }
-
-    .footer-logo {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.2rem;
-      color: var(--white);
-    }
-
-    .footer-logo span { color: var(--gold); }
-
     .footer-copy {
-      font-size: 0.78rem;
-      color: rgba(255,255,255,0.3);
+      font-size: 0.75rem; color: rgba(255,255,255,0.2);
       font-family: 'DM Mono', monospace;
     }
 
-    /* ── Animations ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to   { opacity: 1; }
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ── Responsive ── */
     @media (max-width: 900px) {
       nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
       .hero { grid-template-columns: 1fr; padding: 6rem 1.5rem 3rem; }
       .hero-visual { display: none; }
-      .pain-grid, .features-grid, .process-steps { grid-template-columns: 1fr; }
-      .process-steps::before { display: none; }
-      .solution-header { grid-template-columns: 1fr; gap: 1.5rem; }
+      .section-problem, .section-usecases, .section-how,
+      .section-security, .section-demo, .section-contact { padding: 4rem 1.5rem; }
+      .problem-grid, .how-steps { grid-template-columns: 1fr; }
+      .usecases-grid { grid-template-columns: 1fr 1fr; }
+      .security-grid { grid-template-columns: 1fr; }
+      .security-card.featured { grid-column: span 1; grid-template-columns: 1fr; }
       .form-row { grid-template-columns: 1fr; }
-      .section-problem, .section-solution, .section-process, .section-contact { padding: 4rem 1.5rem; }
       footer { flex-direction: column; gap: 1rem; text-align: center; }
     }
   </style>
@@ -657,297 +604,407 @@
   <!-- Nav -->
   <nav>
     <a href="#" class="nav-logo">
-      <svg height="32" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <polygon points="40,4 12,68 68,68" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-linejoin="round"/>
-        <polygon points="40,4 12,68 40,36" fill="rgba(255,255,255,0.04)" stroke="none"/>
+      <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="40,4 12,68 68,68" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.45)" stroke-width="1.5" stroke-linejoin="round"/>
         <line x1="2" y1="36" x2="24" y2="36" stroke="rgba(255,255,255,0.3)" stroke-width="1.8" stroke-linecap="round"/>
-        <line x1="24" y1="36" x2="54" y2="58" stroke="rgba(255,255,255,0.15)" stroke-width="1.2" stroke-dasharray="3 2" stroke-linecap="round"/>
-        <line x1="54" y1="58" x2="78" y2="42" stroke="#e8433a" stroke-width="1.6" stroke-linecap="round"/>
-        <line x1="54" y1="58" x2="78" y2="49" stroke="#f0832a" stroke-width="1.6" stroke-linecap="round"/>
-        <line x1="54" y1="58" x2="78" y2="56" stroke="#e8c547" stroke-width="1.6" stroke-linecap="round"/>
-        <line x1="54" y1="58" x2="78" y2="63" stroke="#4caf72" stroke-width="1.6" stroke-linecap="round"/>
-        <line x1="54" y1="58" x2="78" y2="70" stroke="#2e75b6" stroke-width="1.6" stroke-linecap="round"/>
-        <line x1="54" y1="58" x2="78" y2="77" stroke="#8b5cf6" stroke-width="1.6" stroke-linecap="round"/>
-        <circle cx="24" cy="36" r="2" fill="rgba(255,255,255,0.3)"/>
-        <circle cx="54" cy="58" r="2" fill="rgba(255,255,255,0.3)"/>
+        <line x1="24" y1="36" x2="54" y2="58" stroke="rgba(255,255,255,0.12)" stroke-width="1.2" stroke-dasharray="3 2" stroke-linecap="round"/>
+        <line x1="54" y1="58" x2="78" y2="42" stroke="#e8433a" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="54" y1="58" x2="78" y2="49" stroke="#f0832a" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="54" y1="58" x2="78" y2="56" stroke="#e8c547" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="54" y1="58" x2="78" y2="63" stroke="#4caf72" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="54" y1="58" x2="78" y2="70" stroke="#2e75b6" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="54" y1="58" x2="78" y2="77" stroke="#8b5cf6" stroke-width="1.5" stroke-linecap="round"/>
       </svg>
       <span class="nav-logo-text">Tetria<span>.</span></span>
     </a>
-    <a href="#contact" class="nav-cta">Prendre contact</a>
+    <ul class="nav-links">
+      <li><a href="#comment">Comment ça marche</a></li>
+      <li><a href="#usecases">Cas d'usage</a></li>
+      <li><a href="#securite">Sécurité</a></li>
+      <li><a href="#demo">Démo</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Nous contacter</a>
   </nav>
 
   <!-- Hero -->
   <section class="hero">
     <div class="hero-content">
-      <p class="hero-eyebrow">Analyse financière · Logement social</p>
+      <p class="hero-eyebrow">Assistant IA sur mesure</p>
       <h1 class="hero-title">
-        Faites la lumière<br>
-        sur vos <em>comptes financiers.</em>
+        Un chatbot qui<br>connaît <em>vos</em><br>documents.
       </h1>
       <p class="hero-sub">
-        Tetria extrait automatiquement les données de vos comptes financiers réglementaires et génère des rapports comparatifs multi-années — sans saisie manuelle, sans erreur.
+        Vous utilisez peut-être ChatGPT au quotidien — mais vous ne pouvez pas y charger vos documents confidentiels. Tetria vous donne la puissance d'un assistant IA entraîné sur vos propres données, dans un environnement entièrement sécurisé.
       </p>
       <div class="hero-actions">
-        <a href="#contact" class="btn-primary">Demander une démo</a>
-        <a href="#solution" class="btn-ghost">Découvrir</a>
+        <a href="#demo" class="btn-primary">Voir la démo</a>
+        <a href="#comment" class="btn-ghost">Comment ça marche</a>
       </div>
     </div>
 
+    <!-- Chat mockup -->
     <div class="hero-visual">
-      <div class="doc-card">
-        <div class="doc-header">
-          <div>
-            <div class="doc-title">Rapport comparatif — Exemple</div>
-            <div style="font-size:0.75rem;color:var(--light);margin-top:0.2rem;font-family:'DM Mono',monospace;">2021 — 2022 — 2023</div>
-          </div>
-          <div class="doc-badge">Démo</div>
+      <div class="chat-window">
+        <div class="chat-topbar">
+          <div class="chat-dot" style="background:#e8433a;"></div>
+          <div class="chat-dot" style="background:#e8c547;"></div>
+          <div class="chat-dot" style="background:#4caf72;"></div>
+          <span style="font-family:'DM Mono',monospace;font-size:0.65rem;color:rgba(255,255,255,0.2);margin-left:0.5rem;">Tetria Assistant</span>
         </div>
-
-        <div class="kpi-grid">
-          <div class="kpi-item">
-            <div class="kpi-label">Résultat net</div>
-            <div class="kpi-value neg">−183 K€</div>
-            <div class="chart-bar"><div class="chart-bar-fill" style="width:28%"></div></div>
+        <div class="chat-messages">
+          <div class="msg">
+            <div class="msg-avatar user">V</div>
+            <div class="msg-bubble user-bubble">
+              Quelles sont les clauses de résiliation dans le contrat Fournisseur X ?
+            </div>
           </div>
-          <div class="kpi-item">
-            <div class="kpi-label">Capitaux propres</div>
-            <div class="kpi-value">18,4 M€</div>
-            <div class="chart-bar"><div class="chart-bar-fill" style="width:76%"></div></div>
+          <div class="msg">
+            <div class="msg-avatar bot">T</div>
+            <div>
+              <div class="msg-bubble">
+                Le contrat Fournisseur X prévoit une résiliation possible avec <strong style="color:var(--gold-l);">préavis de 90 jours</strong> (article 12.3), sans pénalité si le prestataire n'atteint pas les SLA définis à l'annexe B pendant deux trimestres consécutifs.
+                <span class="msg-source">📄 contrat_fournisseurX_2023.pdf — p.18, art. 12.3</span>
+              </div>
+            </div>
           </div>
-          <div class="kpi-item">
-            <div class="kpi-label">CAF nette HLM</div>
-            <div class="kpi-value neg">−210 K€</div>
-            <div class="chart-bar"><div class="chart-bar-fill" style="width:18%"></div></div>
+          <div class="msg">
+            <div class="msg-avatar user">V</div>
+            <div class="msg-bubble user-bubble">
+              Et le budget alloué pour 2024 ?
+            </div>
           </div>
-          <div class="kpi-item">
-            <div class="kpi-label">Total actif</div>
-            <div class="kpi-value pos">24,1 M€</div>
-            <div class="chart-bar"><div class="chart-bar-fill" style="width:88%"></div></div>
+          <div class="msg">
+            <div class="msg-avatar bot">T</div>
+            <div>
+              <div class="msg-bubble">
+                <span class="typing-dots"><span></span><span></span><span></span></span>
+              </div>
+            </div>
           </div>
         </div>
-
-        <div>
-          <div class="trend-row">
-            <span class="trend-label">Résultat d'exploitation</span>
-            <div class="trend-values">
-              <span>−214 K€</span>
-              <span class="trend-delta neg">−198 K€</span>
-            </div>
-          </div>
-          <div class="trend-row">
-            <span class="trend-label">Résultat financier</span>
-            <div class="trend-values">
-              <span>+41 K€</span>
-              <span class="trend-delta pos">+22 K€</span>
-            </div>
-          </div>
-          <div class="trend-row">
-            <span class="trend-label">Variation FDR</span>
-            <div class="trend-values">
-              <span>+4,2 M€</span>
-              <span class="trend-delta pos">+2,8 M€</span>
-            </div>
-          </div>
+        <div class="chat-input">
+          <div class="chat-input-field">Posez votre question...</div>
+          <button class="chat-send">→</button>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Problème -->
-  <section class="section-problem">
-    <div class="problem-inner">
-      <p class="section-eyebrow reveal">Le problème</p>
+  <!-- Comment ça marche -->
+  <section class="section-how" id="comment">
+    <div class="how-inner">
+      <span class="section-eyebrow reveal">Comment ça marche</span>
+      <h2 class="section-title-dark reveal">Trois étapes,<br><em>un résultat.</em></h2>
+
+      <div class="how-steps">
+        <div class="how-step reveal">
+          <div class="how-step-num">01</div>
+          <div class="how-step-title">Vous connectez vos documents</div>
+          <div class="how-step-desc">PDF, Word, Excel, emails, bases de données — peu importe le format ou le volume. Tetria ingère et indexe votre corpus en toute sécurité.</div>
+        </div>
+        <div class="how-step reveal">
+          <div class="how-step-num">02</div>
+          <div class="how-step-title">Tetria apprend votre univers</div>
+          <div class="how-step-desc">L'IA structure, vectorise et comprend vos documents. Elle crée une base de connaissance privée, uniquement accessible par votre organisation.</div>
+        </div>
+        <div class="how-step reveal">
+          <div class="how-step-num">03</div>
+          <div class="how-step-title">Vous posez vos questions</div>
+          <div class="how-step-desc">En langage naturel, depuis votre navigateur. L'assistant répond en citant les sources exactes — passage, document, page — pour chaque réponse.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cas d'usage -->
+  <section class="section-usecases" id="usecases">
+    <div class="usecases-inner">
+      <span class="section-eyebrow reveal" style="color:var(--gold);">Cas d'usage</span>
       <h2 class="section-title-light reveal">
-        Analyser un compte financier<br>
-        prend <em>trop de temps.</em>
+        Tous vos documents.<br><em>Tous vos secteurs.</em>
       </h2>
-      <div class="pain-grid">
-        <div class="pain-item reveal" data-num="01">
-          <div class="pain-title">Des PDF de 50 pages</div>
-          <div class="pain-desc">Les comptes financiers réglementaires sont denses, structurés différemment d'un organisme à l'autre, et impossibles à consolider rapidement.</div>
-        </div>
-        <div class="pain-item reveal" data-num="02">
-          <div class="pain-title">La comparaison multi-années</div>
-          <div class="pain-desc">Reconstruire un historique sur 3 ou 5 ans implique des heures de saisie manuelle, une source d'erreurs systématique.</div>
-        </div>
-        <div class="pain-item reveal" data-num="03">
-          <div class="pain-title">Aucun outil dédié</div>
-          <div class="pain-desc">Les solutions existantes sont soit trop génériques, soit réservées aux grandes structures. Les OPH et ESH moyens n'ont rien d'adapté.</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Solution -->
-  <section class="section-solution" id="solution">
-    <div class="solution-header">
-      <h2 class="section-title-dark reveal">
-        Deux outils.<br>
-        Une seule <em>plateforme.</em>
-      </h2>
-      <p class="solution-desc reveal">
-        Tetria combine un générateur de rapports financiers automatisé et un assistant juridique intelligent — deux réponses complémentaires aux mêmes contraintes de temps et de ressources que rencontrent les organismes HLM au quotidien.
+      <p style="font-size:0.9rem;color:rgba(255,255,255,0.35);max-width:550px;line-height:1.75;margin-top:0.5rem;" class="reveal">
+        Tetria s'adapte à n'importe quel corpus documentaire. Quelques exemples parmi nos déploiements.
       </p>
-    </div>
 
-    <!-- Outil 1 -->
-    <div style="margin-bottom:1px;background:var(--navy);padding:2.5rem;display:grid;grid-template-columns:1fr 2fr;gap:3rem;align-items:start;" class="reveal">
-      <div>
-        <div style="font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;">Outil 01</div>
-        <div style="font-family:'DM Serif Display',serif;font-size:1.6rem;color:var(--white);line-height:1.2;margin-bottom:0.75rem;">Générateur<br>de rapports</div>
-        <div style="font-size:0.82rem;color:rgba(255,255,255,0.4);line-height:1.7;">Vos documents PDF et Excel transformés en analyses comparatives multi-années.</div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
-        <div style="padding:1rem;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.03);">
-          <div style="font-size:0.8rem;font-weight:500;color:var(--white);margin-bottom:0.3rem;">États financiers</div>
-          <div style="font-size:0.75rem;color:rgba(255,255,255,0.4);line-height:1.6;">Annexes réglementaires, bilans, comptes de résultat, SIG, CAF — sur autant d'années que vous souhaitez.</div>
-        </div>
-        <div style="padding:1rem;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.03);">
-          <div style="font-size:0.8rem;font-weight:500;color:var(--white);margin-bottom:0.3rem;">Liasses fiscales & CA3</div>
-          <div style="font-size:0.75rem;color:rgba(255,255,255,0.4);line-height:1.6;">Déclarations fiscales, liasses DGFiP, TVA — états comparatifs et suivi des évolutions.</div>
-        </div>
-        <div style="padding:1rem;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.03);">
-          <div style="font-size:0.8rem;font-weight:500;color:var(--white);margin-bottom:0.3rem;">Budgets d'exploitation</div>
-          <div style="font-size:0.75rem;color:rgba(255,255,255,0.4);line-height:1.6;">Suivi des réalisations vs prévisions, analyse des écarts, rapport de synthèse automatique.</div>
-        </div>
-        <div style="padding:1rem;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.03);">
-          <div style="font-size:0.8rem;font-weight:500;color:var(--white);margin-bottom:0.3rem;">Taxe foncière</div>
-          <div style="font-size:0.75rem;color:rgba(255,255,255,0.4);line-height:1.6;">Analyse de l'évolution par immeuble ou groupe d'immeubles à partir de vos avis de taxe foncière.</div>
-        </div>
-      </div>
-    </div>
+      <div class="usecases-grid">
 
-    <!-- Outil 2 -->
-    <div style="background:var(--cream);border:1px solid var(--mist);padding:2.5rem;display:grid;grid-template-columns:1fr 2fr;gap:3rem;align-items:start;" class="reveal">
-      <div>
-        <div style="font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;">Outil 02</div>
-        <div style="font-family:'DM Serif Display',serif;font-size:1.6rem;color:var(--navy);line-height:1.2;margin-bottom:0.75rem;">Assistant<br>intelligent</div>
-        <div style="font-size:0.82rem;color:var(--light);line-height:1.7;">Un chatbot entraîné sur vos documents internes et sur la réglementation HLM.</div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
-        <div style="padding:1rem;border:1px solid var(--mist);background:var(--white);">
-          <div style="font-size:0.8rem;font-weight:500;color:var(--navy);margin-bottom:0.3rem;">Vos documents internes</div>
-          <div style="font-size:0.75rem;color:var(--light);line-height:1.6;">PV de CA, assemblées générales, directoires, conseils de surveillance, commissions d'attribution et d'appel d'offres — interrogez-les en langage naturel.</div>
+        <div class="usecase-card reveal">
+          <div class="usecase-icon">⚖️</div>
+          <div class="usecase-sector">Juridique</div>
+          <div class="usecase-title">Interrogez vos contrats et procédures</div>
+          <div class="usecase-example">"Quelles sont les pénalités de retard dans le contrat X ?" — réponse en secondes, source indiquée.</div>
         </div>
-        <div style="padding:1rem;border:1px solid var(--mist);background:var(--white);">
-          <div style="font-size:0.8rem;font-weight:500;color:var(--navy);margin-bottom:0.3rem;">Veille réglementaire HLM</div>
-          <div style="font-size:0.75rem;color:var(--light);line-height:1.6;">Nouvelles lois, circulaires, textes réglementaires — obtenez des réponses précises sans lire vous-même des dizaines de pages.</div>
+
+        <div class="usecase-card reveal">
+          <div class="usecase-icon">📊</div>
+          <div class="usecase-sector">Finance & Comptabilité</div>
+          <div class="usecase-title">Analysez bilans, liasses et rapports</div>
+          <div class="usecase-example">"Comment a évolué notre EBE sur 3 ans ?" — données extraites et comparées automatiquement.</div>
         </div>
-        <div style="padding:1rem;border:1px solid var(--mist);background:var(--white);grid-column:span 2;">
-          <div style="font-size:0.8rem;font-weight:500;color:var(--navy);margin-bottom:0.3rem;">Questions précises, réponses sourcées</div>
-          <div style="font-size:0.75rem;color:var(--light);line-height:1.6;">L'assistant cite ses sources et indique les passages exacts sur lesquels il s'appuie — pas d'hallucination, pas d'interprétation hasardeuse.</div>
+
+        <div class="usecase-card reveal">
+          <div class="usecase-icon">👥</div>
+          <div class="usecase-sector">Ressources Humaines</div>
+          <div class="usecase-title">Conventions, accords, politiques RH</div>
+          <div class="usecase-example">"Combien de jours de congé exceptionnel pour un mariage ?" — réponse tirée de votre convention collective.</div>
         </div>
+
+        <div class="usecase-card reveal">
+          <div class="usecase-icon">🏗️</div>
+          <div class="usecase-sector">Technique & Ingénierie</div>
+          <div class="usecase-title">Documentation technique et cahiers des charges</div>
+          <div class="usecase-example">"Quelle est la norme applicable pour l'installation X ?" — extrait du cahier des charges pertinent.</div>
+        </div>
+
+        <div class="usecase-card reveal">
+          <div class="usecase-icon">🏛️</div>
+          <div class="usecase-sector">Secteur Public</div>
+          <div class="usecase-title">Réglementation, circulaires, délibérations</div>
+          <div class="usecase-example">"Que prévoit la délibération du conseil du 14 mars sur les marchés publics ?" — réponse sourcée et datée.</div>
+        </div>
+
+        <div class="usecase-card reveal">
+          <div class="usecase-icon">🎓</div>
+          <div class="usecase-sector">Formation & Knowledge</div>
+          <div class="usecase-title">Base de connaissance interne</div>
+          <div class="usecase-example">"Comment se déroule l'onboarding d'un nouveau collaborateur ?" — procédures internes accessibles instantanément.</div>
+        </div>
+
       </div>
     </div>
   </section>
 
   <!-- Sécurité -->
-  <section style="background:var(--navy);padding:5rem 3rem;">
-    <div style="max-width:900px;margin:0 auto;">
-      <p class="section-eyebrow reveal" style="color:var(--gold);">Sécurité & conformité</p>
-      <h2 class="section-title-light reveal">Vos données restent<br><em>en Europe.</em></h2>
-      <p style="font-size:0.95rem;color:rgba(255,255,255,0.5);line-height:1.75;margin:1.5rem 0 3rem;max-width:600px;" class="reveal">
-        Les comptes financiers et documents internes de vos organismes sont des données sensibles. Tetria est conçu pour répondre aux exigences des organismes publics et parapublics.
+  <section class="section-security" id="securite">
+    <div class="security-inner">
+      <span class="section-eyebrow reveal" style="color:var(--gold);">Sécurité & infrastructure</span>
+      <h2 class="section-title-light reveal">
+        Vos données ne<br>quittent jamais<br><em>votre périmètre.</em>
+      </h2>
+
+      <div class="security-grid" style="margin-top:3rem;">
+
+        <div class="security-card featured reveal">
+          <div>
+            <div class="security-icon">🔐</div>
+            <div class="security-title" style="font-size:1.1rem;margin-bottom:0.75rem;">Architecture isolée par client</div>
+            <div class="security-desc" style="font-size:0.85rem;line-height:1.8;">
+              Chaque déploiement Tetria est une instance dédiée — vos données ne sont jamais mélangées avec celles d'autres organisations. Aucun modèle mutualisé, aucune base vectorielle partagée. Vos documents appartiennent exclusivement à votre environnement.
+            </div>
+          </div>
+          <div class="security-diagram">
+            <div class="diag-row">
+              <div class="diag-box">Vos documents</div>
+              <div class="diag-arrow">→</div>
+              <div class="diag-box highlight">🔒 Chiffrement AES-256</div>
+            </div>
+            <div class="diag-row">
+              <div class="diag-box highlight">Instance dédiée</div>
+              <div class="diag-arrow">→</div>
+              <div class="diag-box">Base vectorielle privée</div>
+            </div>
+            <div class="diag-row">
+              <div class="diag-box">LLM hébergé EU</div>
+              <div class="diag-arrow">→</div>
+              <div class="diag-box highlight">✓ Zero data retention</div>
+            </div>
+            <div class="diag-row" style="margin-top:0.5rem;">
+              <span class="diag-lock">✓</span>
+              <span style="font-size:0.72rem;color:rgba(255,255,255,0.3);">Serveurs certifiés — région Europe (UE)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="security-card reveal">
+          <div class="security-icon">🇪🇺</div>
+          <div class="security-title">Hébergement européen</div>
+          <div class="security-desc">Serveurs situés en Europe, contrats conformes au RGPD, isolation des données par client. Aucun transfert vers des juridictions hors UE.</div>
+        </div>
+
+        <div class="security-card reveal">
+          <div class="security-icon">🚫</div>
+          <div class="security-title">Zéro rétention</div>
+          <div class="security-desc">Politique zero data retention contractuellement engagée. Vos documents ne sont jamais utilisés pour entraîner des modèles tiers. Ce que vous chargez ne sert qu'à vous.</div>
+        </div>
+
+        <div class="security-card reveal">
+          <div class="security-icon">📋</div>
+          <div class="security-title">Accord de confidentialité</div>
+          <div class="security-desc">Chaque engagement inclut un NDA explicite sur le traitement de vos données. Transparence totale sur les flux, les accès et les durées de conservation.</div>
+        </div>
+
+        <div class="security-card reveal">
+          <div class="security-icon">🔑</div>
+          <div class="security-title">Contrôle des accès</div>
+          <div class="security-desc">Authentification par SSO, gestion fine des permissions par utilisateur ou par groupe. Vous décidez qui accède à quoi, avec journalisation complète des requêtes.</div>
+        </div>
+
+      </div>
+
+      <!-- Option on-premise -->
+      <div style="margin-top:2px;background:rgba(201,168,76,0.05);border:1px solid rgba(201,168,76,0.2);padding:2.5rem;display:grid;grid-template-columns:1fr 2fr;gap:3rem;align-items:center;" class="reveal">
+        <div>
+          <div style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;">Niveau maximum</div>
+          <div style="font-family:'DM Serif Display',serif;font-size:1.5rem;color:var(--white);line-height:1.2;margin-bottom:0.75rem;">Déploiement<br>entièrement<br><em style="color:var(--gold);">on-premise</em></div>
+          <div style="font-size:0.78rem;color:rgba(255,255,255,0.35);line-height:1.7;">Pour les organisations aux exigences de sécurité maximales.</div>
+        </div>
+        <div>
+          <p style="font-size:0.88rem;color:rgba(255,255,255,0.5);line-height:1.8;margin-bottom:1.5rem;">
+            Pour les secteurs où aucune donnée ne peut quitter le réseau interne — défense, santé, secteur public classifié — Tetria propose un déploiement entièrement on-premise : le modèle de langage tourne sur vos propres serveurs, dans votre datacenter. Aucune requête ne sort de votre infrastructure, même pour l'inférence.
+          </p>
+          <div style="display:flex;flex-direction:column;gap:0.6rem;">
+            <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.82rem;color:rgba(255,255,255,0.5);">
+              <span style="color:#4caf72;">✓</span> LLM open source déployé sur vos serveurs (Mistral, LLaMA, etc.)
+            </div>
+            <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.82rem;color:rgba(255,255,255,0.5);">
+              <span style="color:#4caf72;">✓</span> Zéro dépendance à un service cloud externe
+            </div>
+            <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.82rem;color:rgba(255,255,255,0.5);">
+              <span style="color:#4caf72;">✓</span> Aucune donnée ne quitte votre réseau, même pour l'inférence
+            </div>
+            <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.82rem;color:rgba(255,255,255,0.5);">
+              <span style="color:#4caf72;">✓</span> Compatible air-gap (réseau totalement isolé)
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Comparaison Copilot -->
+  <section class="section-problem" id="pourquoi" style="background:var(--mist);">
+    <div class="problem-inner">
+      <span class="section-eyebrow reveal">Vous avez déjà Copilot ?</span>
+      <h2 class="section-title-dark reveal">
+        Microsoft Copilot est sérieux.<br>Mais il a des <em>angles morts.</em>
+      </h2>
+      <p style="font-size:0.9rem;color:var(--light);max-width:620px;line-height:1.75;margin-top:0.5rem;margin-bottom:3rem;" class="reveal">
+        Copilot 365 peut interroger vos fichiers SharePoint et Teams, avec des données hébergeables en Europe — c'est une solution crédible pour les organisations 100% Microsoft. Si ce n'est pas votre cas, voici ce que vous devez savoir.
       </p>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,0.06);">
-        <div style="background:rgba(255,255,255,0.03);padding:1.75rem;" class="reveal">
-          <div style="font-size:1.3rem;margin-bottom:0.75rem;">🇪🇺</div>
-          <div style="font-size:0.88rem;font-weight:500;color:var(--white);margin-bottom:0.4rem;">Hébergement EU</div>
-          <div style="font-size:0.78rem;color:rgba(255,255,255,0.4);line-height:1.65;">Propulsé par Azure OpenAI — serveurs Microsoft en Europe, contrats RGPD, isolation des données par client.</div>
+
+      <div class="problem-grid">
+        <div class="problem-card reveal">
+          <div class="problem-card-label" style="color:var(--light);font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1rem;">Microsoft 365 Copilot</div>
+          <div class="problem-card-title">Ce qu'il fait bien</div>
+          <ul class="problem-list good" style="margin-bottom:1.5rem;">
+            <li>Interroge vos fichiers SharePoint, Teams et OneDrive</li>
+            <li>Données hébergeables en Europe via Azure</li>
+            <li>Engagements RGPD pour les clients entreprise</li>
+          </ul>
+          <div class="problem-card-title">Ses limites réelles</div>
+          <ul class="problem-list bad">
+            <li><strong>Écosystème fermé</strong> — vos GED tierces, ERP, serveurs locaux, PDFs hors SharePoint lui sont invisibles</li>
+            <li><strong>Coût élevé</strong> — environ 30 $/utilisateur/mois, en plus de votre licence M365 existante</li>
+            <li><strong>Sources imprécises</strong> — les réponses manquent de références exactes au passage ou à la page</li>
+            <li><strong>Déploiement lourd</strong> — nécessite une infrastructure M365 mature et des administrateurs dédiés</li>
+            <li><strong>Aucune personnalisation</strong> — comportement figé, impossible d'adapter aux usages métier spécifiques</li>
+          </ul>
         </div>
-        <div style="background:rgba(255,255,255,0.03);padding:1.75rem;" class="reveal">
-          <div style="font-size:1.3rem;margin-bottom:0.75rem;">🔒</div>
-          <div style="font-size:0.88rem;font-weight:500;color:var(--white);margin-bottom:0.4rem;">Zéro rétention</div>
-          <div style="font-size:0.78rem;color:rgba(255,255,255,0.4);line-height:1.65;">Politique zero data retention — vos documents ne sont pas utilisés pour entraîner des modèles tiers, et ne sont pas conservés après traitement.</div>
+
+        <div class="problem-card reveal">
+          <div class="problem-card-label good">Tetria</div>
+          <div class="problem-card-title">Un assistant adapté à votre infrastructure réelle</div>
+          <ul class="problem-list good">
+            <li><strong>Compatible avec n'importe quelle source</strong> — GED, ERP, serveurs locaux, PDFs, bases de données, formats hétérogènes</li>
+            <li><strong>Déploiement en quelques jours</strong> — aucune infrastructure préalable, aucun admin dédié</li>
+            <li><strong>Sources citées avec précision</strong> — document, page et passage exact pour chaque réponse</li>
+            <li><strong>Tarification transparente</strong> — forfait fixe adapté à votre usage, sans surprise</li>
+            <li><strong>Assistant configurable</strong> — comportement et périmètre adaptés à vos usages métier</li>
+            <li><strong>Option on-premise</strong> — déploiement entièrement sur vos serveurs si nécessaire</li>
+          </ul>
         </div>
-        <div style="background:rgba(255,255,255,0.03);padding:1.75rem;" class="reveal">
-          <div style="font-size:1.3rem;margin-bottom:0.75rem;">📋</div>
-          <div style="font-size:0.88rem;font-weight:500;color:var(--white);margin-bottom:0.4rem;">Contrat de confidentialité</div>
-          <div style="font-size:0.78rem;color:rgba(255,255,255,0.4);line-height:1.65;">Chaque engagement inclut un accord de confidentialité explicite sur le traitement de vos données financières et documentaires.</div>
-        </div>
+      </div>
+
+      <div style="margin-top:1.5rem;padding:1.25rem 1.5rem;background:var(--white);border-left:3px solid var(--gold);display:flex;gap:1rem;align-items:flex-start;" class="reveal">
+        <span style="font-size:1.1rem;flex-shrink:0;">💡</span>
+        <p style="font-size:0.82rem;color:var(--light);line-height:1.75;">
+          <strong style="color:var(--text);">Si vous êtes 100% dans l'écosystème Microsoft</strong>, Copilot peut être suffisant. Tetria apporte une vraie valeur ajoutée dès que vos documents sont dispersés sur plusieurs systèmes, que vous avez besoin de sources précises, ou que vous souhaitez un déploiement on-premise.
+        </p>
       </div>
     </div>
   </section>
 
-  <!-- Process -->
-  <section class="section-process">
-    <div class="process-inner">
-      <p class="section-eyebrow reveal" style="color:var(--gold)">Comment ça marche</p>
-      <h2 class="section-title-dark reveal">Trois étapes, un résultat.</h2>
-      <div class="process-steps">
-        <div class="step reveal">
-          <div class="step-num">1</div>
-          <div class="step-title">Vous envoyez vos documents</div>
-          <div class="step-desc">PDF ou Excel, comptes financiers, liasses fiscales, PV — peu importe le volume.</div>
-        </div>
-        <div class="step reveal">
-          <div class="step-num">2</div>
-          <div class="step-title">Tetria analyse</div>
-          <div class="step-desc">L'IA extrait, structure et compare les données sur toutes les années disponibles.</div>
-        </div>
-        <div class="step reveal">
-          <div class="step-num">3</div>
-          <div class="step-title">Vous lisez les résultats</div>
-          <div class="step-desc">Un rapport Word détaillé ou un assistant prêt à répondre à vos questions.</div>
-        </div>
-      </div>
+  <!-- Démo -->
+  <section class="section-demo" id="demo">
+    <div class="demo-inner">
+      <div class="demo-badge reveal">Disponible maintenant</div>
+      <h2 class="demo-title reveal">
+        Essayez avant<br>de <em>décider.</em>
+      </h2>
+      <p class="demo-sub reveal">
+        Nous avons déployé une version de démonstration publique. Posez des questions à un corpus documentaire réel et constatez par vous-même la précision des réponses et la qualité des sources citées.
+      </p>
+
+      <!--
+        LIEN DÉMO STREAMLIT — remplacer l'URL ci-dessous par l'adresse de votre application
+        <a href="VOTRE_URL_STREAMLIT_ICI" target="_blank" rel="noopener" class="demo-cta reveal">
+          Accéder à la démo →
+        </a>
+      -->
+      <a href="#contact" class="demo-cta reveal">Demander un accès démo</a>
+
+      <p class="demo-note reveal">Démo sur données réelles · Aucun compte requis · 5 minutes suffisent</p>
     </div>
   </section>
 
   <!-- Contact -->
   <section class="section-contact" id="contact">
-    <div class="contact-header">
-      <p class="section-eyebrow reveal" style="text-align:center">Contact</p>
-      <h2 class="section-title-dark reveal" style="text-align:center">
-        Parlons de<br><em>votre situation.</em>
+    <div class="contact-inner">
+      <span class="section-eyebrow reveal" style="color:var(--gold);display:block;text-align:center;">Contact</span>
+      <h2 class="section-title-light reveal" style="text-align:center;">
+        Parlons de<br><em>votre projet.</em>
       </h2>
-      <p class="reveal" style="font-size:0.9rem;color:var(--light);margin-top:1rem;line-height:1.7;">
-        Je propose un rapport démo gratuit sur vos propres données.<br>Un premier éclairage, sans engagement.
+      <p style="font-size:0.88rem;color:rgba(255,255,255,0.35);text-align:center;margin:1rem 0 3rem;line-height:1.75;" class="reveal">
+        Nous proposons un accès démo sur vos propres documents.<br>Un premier éclairage concret, sans engagement.
       </p>
-    </div>
 
-    <form class="contact-form reveal" name="contact" netlify>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Prénom</label>
-          <input type="text" name="prenom" class="form-input" placeholder="Marie" required>
+      <form class="reveal" name="contact" netlify>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Prénom</label>
+            <input type="text" name="prenom" class="form-input" placeholder="Marie" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nom</label>
+            <input type="text" name="nom" class="form-input" placeholder="Dupont" required>
+          </div>
         </div>
         <div class="form-group">
-          <label class="form-label">Nom</label>
-          <input type="text" name="nom" class="form-input" placeholder="Dupont" required>
+          <label class="form-label">Email professionnel</label>
+          <input type="email" name="email" class="form-input" placeholder="contact@organisation.fr" required>
         </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Email professionnel</label>
-        <input type="email" name="email" class="form-input" placeholder="contact@organisme.fr" required>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Type de structure</label>
-        <select name="type" class="form-select">
-          <option value="">Sélectionner...</option>
-          <option>OPH / ESH</option>
-          <option>Cabinet d'expertise comptable</option>
-          <option>Fédération HLM</option>
-          <option>Direction départementale</option>
-          <option>Autre</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Votre besoin</label>
-        <textarea name="message" class="form-textarea" placeholder="Décrivez votre situation, le nombre d'organismes suivis, vos contraintes..."></textarea>
-      </div>
-      <button type="submit" class="form-submit">Envoyer ma demande →</button>
-      <p class="form-note">Réponse sous 48h. Aucun engagement.</p>
-    </form>
+        <div class="form-group">
+          <label class="form-label">Secteur</label>
+          <select name="secteur" class="form-select">
+            <option value="">Sélectionner...</option>
+            <option>Juridique</option>
+            <option>Finance & Comptabilité</option>
+            <option>Ressources Humaines</option>
+            <option>Secteur Public</option>
+            <option>Industrie & Ingénierie</option>
+            <option>Santé</option>
+            <option>Autre</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Votre besoin</label>
+          <textarea name="message" class="form-textarea" placeholder="Décrivez votre corpus documentaire, vos cas d'usage, vos contraintes de sécurité..."></textarea>
+        </div>
+        <button type="submit" class="form-submit">Envoyer ma demande →</button>
+        <p class="form-note">Réponse sous 48h · Aucun engagement</p>
+      </form>
+    </div>
   </section>
 
   <!-- Footer -->
   <footer>
-    <div class="footer-logo" style="display:flex;align-items:center;gap:0.5rem;">
+    <div style="display:flex;align-items:center;gap:0.5rem;">
       <svg height="24" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <polygon points="40,4 12,68 68,68" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-linejoin="round"/>
+        <polygon points="40,4 12,68 68,68" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.45)" stroke-width="1.5" stroke-linejoin="round"/>
         <line x1="2" y1="36" x2="24" y2="36" stroke="rgba(255,255,255,0.3)" stroke-width="1.8" stroke-linecap="round"/>
-        <line x1="24" y1="36" x2="54" y2="58" stroke="rgba(255,255,255,0.15)" stroke-width="1.2" stroke-dasharray="3 2" stroke-linecap="round"/>
+        <line x1="24" y1="36" x2="54" y2="58" stroke="rgba(255,255,255,0.12)" stroke-width="1.2" stroke-dasharray="3 2" stroke-linecap="round"/>
         <line x1="54" y1="58" x2="78" y2="42" stroke="#e8433a" stroke-width="1.5" stroke-linecap="round"/>
         <line x1="54" y1="58" x2="78" y2="49" stroke="#f0832a" stroke-width="1.5" stroke-linecap="round"/>
         <line x1="54" y1="58" x2="78" y2="56" stroke="#e8c547" stroke-width="1.5" stroke-linecap="round"/>
@@ -957,11 +1014,10 @@
       </svg>
       <span style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:white;">Tetria<span style="color:var(--gold)">.</span></span>
     </div>
-    <div class="footer-copy">© 2025 Tetria — Analyse financière IA pour le logement social</div>
+    <div class="footer-copy">© 2025 Tetria — L'IA qui connaît vos documents</div>
   </footer>
 
   <script>
-    // Scroll reveal
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry, i) => {
         if (entry.isIntersecting) {
