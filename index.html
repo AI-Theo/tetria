@@ -968,7 +968,7 @@
         Nous proposons un accès démo sur vos propres documents.<br>Un premier éclairage concret, sans engagement.
       </p>
 
-      <form class="reveal" name="contact" netlify>
+      <form class="reveal" id="contact-form">
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Prénom</label>
@@ -1000,8 +1000,14 @@
           <label class="form-label">Votre besoin</label>
           <textarea name="message" class="form-textarea" placeholder="Décrivez votre corpus documentaire, vos cas d'usage, vos contraintes de sécurité..."></textarea>
         </div>
-        <button type="submit" class="form-submit">Envoyer ma demande →</button>
+        <button type="submit" class="form-submit" id="form-submit-btn">Envoyer ma demande →</button>
         <p class="form-note">Réponse sous 48h · Aucun engagement</p>
+        <div id="form-success" style="display:none;margin-top:1rem;padding:1rem;background:rgba(76,175,114,0.1);border:1px solid rgba(76,175,114,0.3);color:#4caf72;font-size:0.85rem;text-align:center;">
+          ✓ Message envoyé — nous vous répondons sous 48h.
+        </div>
+        <div id="form-error" style="display:none;margin-top:1rem;padding:1rem;background:rgba(232,67,58,0.1);border:1px solid rgba(232,67,58,0.3);color:#e8433a;font-size:0.85rem;text-align:center;">
+          ✗ Une erreur est survenue. Réessayez ou écrivez directement à contact@tetria.fr
+        </div>
       </form>
     </div>
   </section>
@@ -1036,6 +1042,42 @@
     }, { threshold: 0.1 });
 
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Formulaire de contact
+    document.getElementById('contact-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const btn = document.getElementById('form-submit-btn');
+      const success = document.getElementById('form-success');
+      const error = document.getElementById('form-error');
+
+      btn.textContent = 'Envoi en cours...';
+      btn.disabled = true;
+      success.style.display = 'none';
+      error.style.display = 'none';
+
+      const formData = new FormData(this);
+
+      try {
+        const res = await fetch('contact.php', {
+          method: 'POST',
+          body: formData
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          success.style.display = 'block';
+          this.reset();
+        } else {
+          error.style.display = 'block';
+        }
+      } catch (err) {
+        error.style.display = 'block';
+      } finally {
+        btn.textContent = 'Envoyer ma demande →';
+        btn.disabled = false;
+      }
+    });
   </script>
 
 </body>
