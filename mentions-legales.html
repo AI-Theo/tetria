@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mentions légales — Tetria</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:  #0f1923;
+      --gold:  #c9a84c;
+      --cream: #f7f4ee;
+      --text:  #2c3a46;
+      --light: #6b7c8d;
+      --mist:  #eceae4;
+      --white: #ffffff;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+    }
+
+    /* Nav */
+    nav {
+      background: var(--navy);
+      padding: 1.25rem 3rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 0.6rem;
+      text-decoration: none;
+    }
+    .nav-logo-text {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem; color: white; letter-spacing: -0.02em;
+    }
+    .nav-logo-text span { color: var(--gold); }
+    .nav-back {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem; letter-spacing: 0.08em;
+      text-transform: uppercase; color: rgba(255,255,255,0.5);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .nav-back:hover { color: white; }
+
+    /* Content */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 4rem 2rem 6rem;
+    }
+
+    .page-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.5rem; color: var(--navy);
+      letter-spacing: -0.02em; margin-bottom: 0.5rem;
+    }
+
+    .page-date {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem; color: var(--light);
+      letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: 3rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--mist);
+    }
+
+    .section {
+      margin-bottom: 3rem;
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem; color: var(--navy);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--gold);
+      display: inline-block;
+    }
+
+    p {
+      font-size: 0.9rem;
+      line-height: 1.8;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+
+    .field {
+      display: inline;
+      background: rgba(201,168,76,0.15);
+      border: 1px dashed var(--gold);
+      padding: 0.1rem 0.4rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--navy);
+      border-radius: 2px;
+    }
+
+    ul {
+      margin: 0.5rem 0 0.75rem 1.5rem;
+    }
+    ul li {
+      font-size: 0.9rem;
+      line-height: 1.8;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+
+    a {
+      color: var(--navy);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    a:hover { color: var(--gold); }
+
+    .separator {
+      border: none;
+      border-top: 1px solid var(--mist);
+      margin: 3rem 0;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--navy);
+      padding: 2rem 3rem;
+      text-align: center;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.2);
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <svg height="28" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="40,4 12,68 68,68" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.45)" stroke-width="1.5" stroke-linejoin="round"/>
+        <line x1="2" y1="36" x2="24" y2="36" stroke="rgba(255,255,255,0.3)" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="24" y1="36" x2="54" y2="58" stroke="rgba(255,255,255,0.12)" stroke-width="1.2" stroke-dasharray="3 2" stroke-linecap="round"/>
+        <line x1="54" y1="58" x2="78" y2="42" stroke="#e8433a" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="54" y1="58" x2="78" y2="56" stroke="#e8c547" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="54" y1="58" x2="78" y2="63" stroke="#4caf72" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="54" y1="58" x2="78" y2="70" stroke="#2e75b6" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span class="nav-logo-text">Tetria<span>.</span></span>
+    </a>
+    <a href="index.html" class="nav-back">← Retour au site</a>
+  </nav>
+
+  <div class="container">
+
+    <h1 class="page-title">Mentions légales</h1>
+    <p class="page-date">Dernière mise à jour : <span class="field">15/05/2026</span></p>
+
+    <!-- ÉDITEUR -->
+    <div class="section">
+      <h2 class="section-title">Éditeur du site</h2>
+      <p>Le site <strong>tetria.fr</strong> est édité par :</p>
+      <p>
+        <strong>Nom :</strong> <span class="field">Théo ALGAZE</span><br>
+        <strong>Forme juridique :</strong> Entreprise individuelle<br>
+        <strong>Adresse :</strong> <span class="field">6 rue Paul Reiss, Strasbourg</span><br>
+        <strong>SIRET :</strong> <span class="field">87869498300023</span><br>
+        <strong>Email :</strong> <a href="mailto:contact@tetria.fr">contact@tetria.fr</a>
+      </p>
+    </div>
+
+    <!-- DIRECTEUR DE PUBLICATION -->
+    <div class="section">
+      <h2 class="section-title">Directeur de la publication</h2>
+      <p><span class="field">Théo ALGAZE</span></p>
+    </div>
+
+    <!-- HÉBERGEUR -->
+    <div class="section">
+      <h2 class="section-title">Hébergeur</h2>
+      <p>
+        <strong>OVH SAS</strong><br>
+        2 rue Kellermann — BP 80157<br>
+        59053 Roubaix Cedex 1 — France<br>
+        Téléphone : 1007<br>
+        <a href="https://www.ovhcloud.com" target="_blank" rel="noopener">www.ovhcloud.com</a>
+      </p>
+    </div>
+
+    <!-- PROPRIÉTÉ INTELLECTUELLE -->
+    <div class="section">
+      <h2 class="section-title">Propriété intellectuelle</h2>
+      <p>
+        L'ensemble des contenus présents sur le site tetria.fr (textes, graphismes, logo, images) sont la propriété exclusive de <span class="field">Théo ALGAZE</span>, sauf mention contraire.
+      </p>
+      <p>
+        Toute reproduction, représentation, modification ou exploitation de tout ou partie des contenus du site, sans autorisation expresse et préalable, est interdite et constituerait une contrefaçon sanctionnée par les articles L.335-2 et suivants du Code de la propriété intellectuelle.
+      </p>
+    </div>
+
+    <!-- LIMITATION DE RESPONSABILITÉ -->
+    <div class="section">
+      <h2 class="section-title">Limitation de responsabilité</h2>
+      <p>
+        Les informations contenues sur ce site sont fournies à titre indicatif. <span class="field">Théo ALGAZE</span> s'efforce de maintenir ces informations à jour mais ne peut garantir leur exactitude, exhaustivité ou actualité.
+      </p>
+      <p>
+        Les démonstrations proposées sur ce site utilisent des données publiques ou fictives. Elles ne constituent pas un engagement contractuel sur les performances de la solution.
+      </p>
+    </div>
+
+    <hr class="separator">
+
+    <!-- POLITIQUE DE CONFIDENTIALITÉ -->
+    <h1 class="page-title" style="margin-top:1rem;">Politique de confidentialité</h1>
+    <p class="page-date">Conformément au Règlement Général sur la Protection des Données (RGPD) — UE 2016/679</p>
+
+    <!-- RESPONSABLE DU TRAITEMENT -->
+    <div class="section">
+      <h2 class="section-title">Responsable du traitement</h2>
+      <p>
+        <span class="field">Théo ALGAZE</span> — <span class="field">6 rue Paul Reiss, Strasbourg</span><br>
+        Email : <a href="mailto:contact@tetria.fr">contact@tetria.fr</a>
+      </p>
+    </div>
+
+    <!-- DONNÉES COLLECTÉES -->
+    <div class="section">
+      <h2 class="section-title">Données collectées</h2>
+      <p>Le site tetria.fr collecte uniquement les données que vous fournissez volontairement via le formulaire de contact :</p>
+      <ul>
+        <li>Prénom et nom</li>
+        <li>Adresse email professionnelle</li>
+        <li>Secteur d'activité</li>
+        <li>Message libre</li>
+      </ul>
+      <p>Aucune donnée n'est collectée automatiquement (pas de cookies de tracking, pas de Google Analytics, pas de pixel publicitaire).</p>
+    </div>
+
+    <!-- FINALITÉ -->
+    <div class="section">
+      <h2 class="section-title">Finalité du traitement</h2>
+      <p>Les données collectées via le formulaire de contact sont utilisées uniquement pour :</p>
+      <ul>
+        <li>Répondre à votre demande de contact ou de démonstration</li>
+        <li>Vous adresser des informations commerciales relatives aux services Tetria, si vous y avez consenti</li>
+      </ul>
+      <p>Elles ne sont jamais vendues, cédées ou transmises à des tiers.</p>
+    </div>
+
+    <!-- DURÉE DE CONSERVATION -->
+    <div class="section">
+      <h2 class="section-title">Durée de conservation</h2>
+      <p>
+        Les données issues du formulaire de contact sont conservées pendant une durée maximale de <strong>3 ans</strong> à compter du dernier contact, puis supprimées.
+      </p>
+    </div>
+
+    <!-- VOS DROITS -->
+    <div class="section">
+      <h2 class="section-title">Vos droits</h2>
+      <p>Conformément au RGPD, vous disposez des droits suivants :</p>
+      <ul>
+        <li><strong>Droit d'accès</strong> — obtenir une copie de vos données</li>
+        <li><strong>Droit de rectification</strong> — corriger des données inexactes</li>
+        <li><strong>Droit à l'effacement</strong> — demander la suppression de vos données</li>
+        <li><strong>Droit d'opposition</strong> — vous opposer au traitement</li>
+        <li><strong>Droit à la portabilité</strong> — recevoir vos données dans un format structuré</li>
+      </ul>
+      <p>
+        Pour exercer ces droits, contactez-nous à : <a href="mailto:contact@tetria.fr">contact@tetria.fr</a><br>
+        Nous nous engageons à répondre dans un délai maximum de <strong>30 jours</strong>.
+      </p>
+      <p>
+        Vous avez également le droit d'introduire une réclamation auprès de la <strong>CNIL</strong> : <a href="https://www.cnil.fr" target="_blank" rel="noopener">www.cnil.fr</a>
+      </p>
+    </div>
+
+    <!-- COOKIES -->
+    <div class="section">
+      <h2 class="section-title">Cookies</h2>
+      <p>
+        Le site tetria.fr n'utilise aucun cookie de tracking ou publicitaire. Aucun outil d'analyse d'audience tiers (Google Analytics, Matomo, etc.) n'est installé sur ce site.
+      </p>
+    </div>
+
+    <!-- SÉCURITÉ -->
+    <div class="section">
+      <h2 class="section-title">Sécurité des données</h2>
+      <p>
+        Les données transmises via le formulaire de contact sont acheminées par connexion sécurisée (HTTPS/TLS). L'hébergement est assuré par OVH sur des serveurs situés en France.
+      </p>
+    </div>
+
+  </div>
+
+  <footer>
+    © 2025 Tetria — tetria.fr · <a href="mentions-legales.html" style="color:rgba(255,255,255,0.3);">Mentions légales</a>
+  </footer>
+
+</body>
+</html>

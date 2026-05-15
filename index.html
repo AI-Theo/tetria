@@ -22,6 +22,7 @@
     }
 
     html { scroll-behavior: smooth; }
+    body { overflow-x: hidden; }
 
     body {
       font-family: 'DM Sans', sans-serif;
@@ -440,7 +441,7 @@
     }
     .security-desc {
       font-size: 0.8rem; color: rgba(255,255,255,0.4);
-      line-height: 1.7;
+      line-height: 1.7; word-break: break-word; overflow-wrap: break-word;
     }
 
     .security-diagram {
@@ -586,14 +587,19 @@
     @media (max-width: 900px) {
       nav { padding: 1rem 1.5rem; }
       .nav-links { display: none; }
-      .hero { grid-template-columns: 1fr; padding: 6rem 1.5rem 3rem; }
+      .hero { grid-template-columns: 1fr; padding: 6rem 1.5rem 3rem; overflow: hidden; }
       .hero-visual { display: none; }
       .section-problem, .section-usecases, .section-how,
-      .section-security, .section-demo, .section-contact { padding: 4rem 1.5rem; }
+      .section-security, .section-demo, .section-contact { padding: 4rem 1.5rem; overflow: hidden; }
+      .security-inner, .problem-inner, .usecases-inner, .how-inner, .demo-inner, .contact-inner { max-width: 100%; overflow: hidden; }
       .problem-grid, .how-steps { grid-template-columns: 1fr; }
       .usecases-grid { grid-template-columns: 1fr 1fr; }
-      .security-grid { grid-template-columns: 1fr; }
-      .security-card.featured { grid-column: span 1; grid-template-columns: 1fr; }
+      .security-grid { grid-template-columns: 1fr; width: 100%; overflow: hidden; }
+      .security-card.featured { grid-column: 1 / -1; grid-template-columns: 1fr; gap: 1.5rem; width: 100%; box-sizing: border-box; }
+      .diag-row { flex-wrap: wrap; gap: 0.4rem; }
+      .diag-box { white-space: normal; word-break: break-word; max-width: 100%; }
+      .security-diagram { overflow: hidden; width: 100%; }
+      .on-premise-grid { grid-template-columns: 1fr !important; }
       .form-row { grid-template-columns: 1fr; }
       footer { flex-direction: column; gap: 1rem; text-align: center; }
     }
@@ -843,7 +849,7 @@
       </div>
 
       <!-- Option on-premise -->
-      <div style="margin-top:2px;background:rgba(201,168,76,0.05);border:1px solid rgba(201,168,76,0.2);padding:2.5rem;display:grid;grid-template-columns:1fr 2fr;gap:3rem;align-items:center;" class="reveal">
+      <div class="on-premise-grid" style="margin-top:2px;background:rgba(201,168,76,0.05);border:1px solid rgba(201,168,76,0.2);padding:2.5rem;display:grid;grid-template-columns:1fr 2fr;gap:3rem;align-items:center;" class="reveal">
         <div>
           <div style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;">Niveau maximum</div>
           <div style="font-family:'DM Serif Display',serif;font-size:1.5rem;color:var(--white);line-height:1.2;margin-bottom:0.75rem;">Déploiement<br>entièrement<br><em style="color:var(--gold);">on-premise</em></div>
@@ -917,12 +923,7 @@
         </div>
       </div>
 
-      <div style="margin-top:1.5rem;padding:1.25rem 1.5rem;background:var(--white);border-left:3px solid var(--gold);display:flex;gap:1rem;align-items:flex-start;" class="reveal">
-        <span style="font-size:1.1rem;flex-shrink:0;">💡</span>
-        <p style="font-size:0.82rem;color:var(--light);line-height:1.75;">
-          <strong style="color:var(--text);">Si vous êtes 100% dans l'écosystème Microsoft</strong>, Copilot peut être suffisant. Tetria apporte une vraie valeur ajoutée dès que vos documents sont dispersés sur plusieurs systèmes, que vous avez besoin de sources précises, ou que vous souhaitez un déploiement on-premise.
-        </p>
-      </div>
+
     </div>
   </section>
 
@@ -1013,23 +1014,27 @@
   </section>
 
   <!-- Footer -->
-  <footer>
-    <div style="display:flex;align-items:center;gap:0.5rem;">
-      <svg height="24" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <polygon points="40,4 12,68 68,68" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.45)" stroke-width="1.5" stroke-linejoin="round"/>
-        <line x1="2" y1="36" x2="24" y2="36" stroke="rgba(255,255,255,0.3)" stroke-width="1.8" stroke-linecap="round"/>
-        <line x1="24" y1="36" x2="54" y2="58" stroke="rgba(255,255,255,0.12)" stroke-width="1.2" stroke-dasharray="3 2" stroke-linecap="round"/>
-        <line x1="54" y1="58" x2="78" y2="42" stroke="#e8433a" stroke-width="1.5" stroke-linecap="round"/>
-        <line x1="54" y1="58" x2="78" y2="49" stroke="#f0832a" stroke-width="1.5" stroke-linecap="round"/>
-        <line x1="54" y1="58" x2="78" y2="56" stroke="#e8c547" stroke-width="1.5" stroke-linecap="round"/>
-        <line x1="54" y1="58" x2="78" y2="63" stroke="#4caf72" stroke-width="1.5" stroke-linecap="round"/>
-        <line x1="54" y1="58" x2="78" y2="70" stroke="#2e75b6" stroke-width="1.5" stroke-linecap="round"/>
-        <line x1="54" y1="58" x2="78" y2="77" stroke="#8b5cf6" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
-      <span style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:white;">Tetria<span style="color:var(--gold)">.</span></span>
-    </div>
-    <div class="footer-copy">© 2025 Tetria — L'IA qui connaît vos documents</div>
-  </footer>
+    <footer>
+      <div style="display:flex;align-items:center;gap:0.5rem;">
+        <svg height="24" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="40,4 12,68 68,68" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.45)" stroke-width="1.5" stroke-linejoin="round"/>
+          <line x1="2" y1="36" x2="24" y2="36" stroke="rgba(255,255,255,0.3)" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="24" y1="36" x2="54" y2="58" stroke="rgba(255,255,255,0.12)" stroke-width="1.2" stroke-dasharray="3 2" stroke-linecap="round"/>
+          <line x1="54" y1="58" x2="78" y2="42" stroke="#e8433a" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="54" y1="58" x2="78" y2="49" stroke="#f0832a" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="54" y1="58" x2="78" y2="56" stroke="#e8c547" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="54" y1="58" x2="78" y2="63" stroke="#4caf72" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="54" y1="58" x2="78" y2="70" stroke="#2e75b6" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="54" y1="58" x2="78" y2="77" stroke="#8b5cf6" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <span style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:white;">Tetria<span style="color:var(--gold)">.</span></span>
+      </div>
+      <div class="footer-copy">
+        © 2026 Tetria — L'IA qui connaît vos documents
+        &nbsp;·&nbsp;
+        <a href="mentions-legales.html" style="color:rgba(255,255,255,0.2);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='rgba(255,255,255,0.5)'" onmouseout="this.style.color='rgba(255,255,255,0.2)'">Mentions légales</a>
+      </div>
+    </footer>
 
   <script>
     const observer = new IntersectionObserver((entries) => {
